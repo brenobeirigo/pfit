@@ -1,0 +1,100 @@
+from Dao import *
+from OptMethod import *
+from datetime import datetime, date, time, timedelta
+import time
+from Coordinate import *
+
+"""
+url = "https://api.mapbox.com/directions-matrix/v1/mapbox/driving/-122.42,37.78;-122.45,37.91;-122.48,37.73?sources=0;2&destinations=all&access_token="+MAPBOX_ACCESS_TOKEN
+response = urllib.request.urlopen(url).read()
+j = json.loads(response.decode('utf-8'))
+print(j)
+print(j["durations"][0])
+print("TEST")
+"""
+p1 = Coordinate(-73.987267,40.719803)
+p2 = Coordinate(-73.980408,40.728725)
+p1.get_distance_online(p2)
+revealing = datetime.strptime('2016-05-03 23:11', '%Y-%m-%d %H:%M')
+print(revealing)
+r2 = datetime.strptime('2016-05-04 23:00', '%Y-%m-%d %H:%M')
+print(r2)
+r3 = r2 - revealing
+
+conve1 = datetime.fromtimestamp(int(1284374460)).strftime('%Y-%m-%d %H:%M')
+conve2 = datetime.fromtimestamp(int(1284376273)).strftime('%Y-%m-%d %H:%M')
+conve3 = datetime.fromtimestamp(int(1284374460+600)).strftime('%Y-%m-%d %H:%M')
+t1 = datetime.strptime('2016-05-04 23:00', '%Y-%m-%d %H:%M')
+t2 = datetime.strptime('2016-05-04 23:10', '%Y-%m-%d %H:%M')
+
+t4 = datetime.strptime('00:10', '%H:%M')
+
+t3 = t2-t1
+print("T3:"+str(t3))
+print("DATA1: "+str(conve1))
+print("DATA2: "+str(conve2))
+print("DATA3: "+str(conve3))
+
+stamp = time.mktime(r2.timetuple())
+print(stamp)
+if r2 > revealing:
+      print (r2,' > ', revealing)
+print(r3)
+# Every ride can only be MAX_LATENESS time units over the fastest trip
+MAX_LATENESS = 600
+MAX_PICKUP_LATENESS = 300
+MAX_STEPS = 2000000000
+
+# Define parameters of method
+max_lateness = MAX_LATENESS
+max_pickup_lateness = MAX_PICKUP_LATENESS
+max_steps = MAX_STEPS
+
+# Get data
+#DAO = Dao.DaoBasicTest()
+#print("Parcel locker DAO")
+#pprint.pprint(DAO.get_price_parcel_locker())
+
+# Create DARP object
+#darp = DARP(DAO, max_lateness, max_pickup_lateness, max_steps)
+#darp.plot_result()
+#print(darp)
+
+"""
+DAO = DaoSARPPL()
+darp2 = SARP_PL(DAO, max_lateness, max_pickup_lateness, max_steps)
+darp2.plot_result()
+print(darp2)
+"""
+
+
+DAO = DaoSARP_NYC()
+darp2 = SARP_PL(DAO, max_lateness, max_pickup_lateness, max_steps)
+darp2.plot_result()
+#print(darp2)
+
+
+
+"""
+from pandas import *
+import jsonpickle
+import osmnx as ox
+import networkx as nx
+ G = ox.graph_from_address('Manhattan, New York City, New York, USA', distance=500, network_type='drive')
+ nodes = nx.nodes(G)
+ for i in nodes:
+   print(str(i) + "--" + str(G.node[i]))
+ if i%2 == 0:
+   nx.set_node_attributes(G, i, {c:'blue'})
+ else:
+   nx.set_node_attributes(G, i, {'node_color':'red'})
+ nx.draw(G,node_color = 'blue',with_labels = False)
+
+ G3 = nx.grid
+ nx.draw_spectral(G3)
+ ox.get_nearest_node()
+ route = nx.shortest_path(G, origin, destination)
+ ox.plot_graph(G)
+ pprint.pprint(str(jsonpickle.encode(requests)))
+ Annotate passenger requests    
+"""
